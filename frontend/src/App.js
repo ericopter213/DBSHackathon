@@ -1,6 +1,6 @@
-// Import necessary modules from React and React Router
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./components/protectedRoute";
 
 import Homepage from "./views/homepage";
 import Login from "./views/login";
@@ -15,14 +15,20 @@ function App() {
 	return (
 		<Router>
 			<Routes>
-				<Route path="/" element={<Homepage />} />
+				{/* landing page */}
+				<Route index element={<Navigate to="/login" />} />
+
+				<Route path="/homepage" element={<Homepage />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<Signup />} />
 
-				<Route path="/create" element={<Create />} />
-				<Route path="/read" element={<Read />} />
-				<Route path="/update" element={<Update />} />
-				<Route path="/delete" element={<Delete />} />
+				{/* protected, need to login first */}
+				<Route element={<ProtectedRoute />}>
+					<Route path="/create" element={<Create />} />
+					<Route path="/read" element={<Read />} />
+					<Route path="/update" element={<Update />} />
+					<Route path="/delete" element={<Delete />} />
+				</Route>
 			</Routes>
 		</Router>
 	);

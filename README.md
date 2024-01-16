@@ -17,11 +17,9 @@ ReactJS + material UI
 ## Backend
 NodeJS, ExpressJS, MongoDB
 
-Python Flask, MySQL
-
-Django, PostgreSQL
-
 # How to run
+in root folder, run ```npm install``` if first time and then ```npm start```
+
 ## Frontend
 ```cd``` into frontend folder
 
@@ -30,4 +28,10 @@ Django, PostgreSQL
 ```npm start```
 
 ## Backend
-depends on stack
+```cd``` into backend folder
+
+```npm install``` if first time
+
+```node models/populate.js``` to populate database with sample data if first time
+
+```npm start```

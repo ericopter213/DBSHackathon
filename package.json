@@ -1,0 +1,10 @@
+{
+	"scripts": {
+		"start": "node index.js",
+		"start-watch": "nodemon index.js",
+		"install:frontend": "cd frontend && npm install",
+		"install:backend": "cd backend && npm install",
+		"install:all": "npm run install:frontend && npm run install:backend",
+		"dev": "concurrently \"cd frontend && npm start\" \"cd backend && npm start\""
+	}
+}

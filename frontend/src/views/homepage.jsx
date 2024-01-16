@@ -1,5 +1,5 @@
 // Import necessary React and Material-UI components
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Typography,
 	CssBaseline,
@@ -11,57 +11,100 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
+	Container,
+	Link,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import Header from "../components/header";
 
-const transactionsData = [
-	{ id: 1, description: "Transaction 1", amount: 100.0 },
-	{ id: 2, description: "Transaction 2", amount: -50.0 },
-];
-
 const Homepage = () => {
+	const navigate = useNavigate();
+	const [transactionsData, setTransactionsData] = useState([]);
+
+	// Fetch data from Express backend when the component mounts
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await fetch(
+					"http://localhost:9000/transactions"
+				);
+				const data = await response.json();
+
+				// Assuming the data is an array of transactions
+				setTransactionsData(data);
+			} catch (error) {
+				console.error("Error fetching transactions:", error);
+			}
+		};
+
+		fetchData();
+	}, []);
 	return (
 		<div>
 			<CssBaseline />
 
 			<Header />
-
-			<Typography variant="h5" gutterBottom>
-				Transactions List
-			</Typography>
-			<TableContainer component={Paper}>
-				<Table>
-					<TableHead>
-						<TableRow>
-							<TableCell>ID</TableCell>
-							<TableCell>Description</TableCell>
-							<TableCell>Amount</TableCell>
-							<TableCell>Action</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{transactionsData.map((transaction) => (
-							<TableRow key={transaction.id}>
-								<TableCell>{transaction.id}</TableCell>
-								<TableCell>{transaction.description}</TableCell>
-								<TableCell>{transaction.amount}</TableCell>
-								<TableCell>
-									{/* Add buttons for update and delete actions */}
-									<Button variant="outlined" color="primary">
-										Edit
-									</Button>
-									<Button
-										variant="outlined"
-										color="secondary">
-										Delete
-									</Button>
-								</TableCell>
+			<Container style={{ marginTop: "20px" }}>
+				<Typography variant="h5" gutterBottom>
+					Transactions List
+				</Typography>
+				<TableContainer component={Paper}>
+					<Table>
+						<TableHead>
+							<TableRow>
+								<TableCell>ID</TableCell>
+								<TableCell>Description</TableCell>
+								<TableCell>Amount</TableCell>
+								<TableCell>Action</TableCell>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
+						</TableHead>
+						<TableBody>
+							{transactionsData.map((transaction) => (
+								<TableRow key={transaction._id}>
+									<TableCell>{transaction._id}</TableCell>
+									<TableCell>
+										{transaction.description}
+									</TableCell>
+									<TableCell>{transaction.amount}</TableCell>
+									<TableCell>
+										<Button
+											variant="outlined"
+											color="primary"
+											style={{ marginRight: "8px" }}
+											onClick={() =>
+												navigate(
+													`/read?id=${transaction._id}`
+												)
+											}>
+											Read
+										</Button>
+										<Link
+											to={`/update?id=${transaction._id}`}>
+											<Button
+												variant="outlined"
+												color="primary"
+												style={{ marginRight: "8px" }}
+												onClick={() =>
+													navigate(
+														`/update?id=${transaction._id}`
+													)
+												}>
+												Edit
+											</Button>
+										</Link>
+										<Button
+											variant="outlined"
+											color="secondary">
+											Delete
+										</Button>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</Container>
 		</div>
 	);
 };

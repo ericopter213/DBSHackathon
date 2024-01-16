@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import {
 	Container,
 	TextField,
@@ -9,19 +12,46 @@ import {
 } from "@mui/material";
 
 const Signup = () => {
+	const navigate = useNavigate();
+
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleSignup = (event) => {
+	const handleSignup = async (event) => {
 		event.preventDefault();
-		console.log("Signing up with:", { username, email, password });
+		try {
+			const response = await axios.post("http://localhost:9000/signup", {
+				username,
+				password,
+			});
+
+			console.log("Signup successful:", response.data);
+			localStorage.setItem("username", username);
+			navigate("/homepage");
+		} catch (error) {
+			console.error(
+				"Error during login:",
+				error.response ? error.response.data : error.message
+			);
+		}
 	};
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container
+			component="main"
+			maxWidth="xs"
+			style={{
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				paddingTop: "50px",
+			}}>
 			<div>
-				<Typography component="h1" variant="h5">
+				<Typography
+					component="h1"
+					variant="h5"
+					style={{ textAlign: "center" }}>
 					Sign Up
 				</Typography>
 				<form onSubmit={handleSignup}>
@@ -66,7 +96,7 @@ const Signup = () => {
 
 				<Grid container justifyContent="flex-end">
 					<Grid item>
-						<Link href="#" variant="body2">
+						<Link href="/login" variant="body2">
 							Already have an account? Login
 						</Link>
 					</Grid>
