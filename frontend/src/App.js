@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/protectedRoute";
 
 import Homepage from "./views/homepage";
@@ -15,9 +15,14 @@ function App() {
 	return (
 		<Router>
 			<Routes>
-				<Route path="/" element={<Homepage />} />
+				{/* landing page */}
+				<Route index element={<Navigate to="/login" />} />
+
+				<Route path="/homepage" element={<Homepage />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<Signup />} />
+
+				{/* protected, need to login first */}
 				<Route element={<ProtectedRoute />}>
 					<Route path="/create" element={<Create />} />
 					<Route path="/read" element={<Read />} />

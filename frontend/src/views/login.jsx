@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import {
 	Container,
 	TextField,
@@ -9,18 +12,45 @@ import {
 } from "@mui/material";
 
 const Login = () => {
+	const navigate = useNavigate();
+
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 
-	const handleLogin = (event) => {
+	const handleLogin = async (event) => {
 		event.preventDefault();
-		console.log("Logging in with:", { username, password });
+
+		try {
+			const response = await axios.post("http://localhost:9000/login", {
+				username,
+				password,
+			});
+
+			console.log("Login successful:", response.data);
+			navigate("/homepage");
+		} catch (error) {
+			console.error(
+				"Error during login:",
+				error.response ? error.response.data : error.message
+			);
+		}
 	};
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container
+			component="main"
+			maxWidth="xs"
+			style={{
+				display: "flex",
+				flexDirection: "column",
+				alignItems: "center",
+				paddingTop: "50px",
+			}}>
 			<div>
-				<Typography component="h1" variant="h5">
+				<Typography
+					component="h1"
+					variant="h5"
+					style={{ textAlign: "center" }}>
 					Login
 				</Typography>
 				<form onSubmit={handleLogin}>
@@ -53,15 +83,10 @@ const Login = () => {
 					</Button>
 				</form>
 
-				<Grid container>
-					<Grid item xs>
-						<Link href="#" variant="body2">
-							Forgot password?
-						</Link>
-					</Grid>
+				<Grid container justifyContent="flex-end">
 					<Grid item>
-						<Link href="#" variant="body2">
-							{"Don't have an account? Sign Up"}
+						<Link href="/signup" variant="body2">
+							Don't have an account? Sign Up
 						</Link>
 					</Grid>
 				</Grid>
