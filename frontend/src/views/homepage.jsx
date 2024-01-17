@@ -1,5 +1,5 @@
 // Import necessary React and Material-UI components
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
 	Typography,
 	CssBaseline,
@@ -15,12 +15,27 @@ import {
 
 import Header from "../components/header";
 
-const transactionsData = [
-	{ id: 1, description: "Transaction 1", amount: 100.0 },
-	{ id: 2, description: "Transaction 2", amount: -50.0 },
-];
-
 const Homepage = () => {
+	const [transactionsData, setTransactionsData] = useState([]);
+
+	// Fetch data from Express backend when the component mounts
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await fetch(
+					"http://localhost:9000/transactions"
+				);
+				const data = await response.json();
+
+				// Assuming the data is an array of transactions
+				setTransactionsData(data);
+			} catch (error) {
+				console.error("Error fetching transactions:", error);
+			}
+		};
+
+		fetchData();
+	}, []);
 	return (
 		<div>
 			<CssBaseline />

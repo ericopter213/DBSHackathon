@@ -1,9 +1,10 @@
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = 3000;
+const port = 9000;
 
 // Connect to MongoDB (replace 'yourdatabaseurl' with your MongoDB connection string)
 mongoose.connect("mongodb://localhost:27017/", {
@@ -27,6 +28,7 @@ const Transaction = mongoose.model("Transaction", transactionSchema);
 const User = mongoose.model("User", userSchema);
 
 // Middleware
+app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
@@ -92,7 +94,7 @@ app.post("/transactions", async (req, res) => {
 });
 
 // Get all transactions
-app.get("/", async (req, res) => {
+app.get("/transactions", async (req, res) => {
 	try {
 		const transactions = await Transaction.find();
 		return res.status(200).json(transactions);

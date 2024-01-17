@@ -12,43 +12,18 @@ import Update from "./views/crud/update";
 import Delete from "./views/crud/delete";
 
 function App() {
-	const [isAuthenticated, setAuthenticated] = useState(false);
-
-	const loginHandler = () => {
-		setAuthenticated(true);
-	};
-
 	return (
 		<Router>
 			<Routes>
 				<Route path="/" element={<Homepage />} />
 				<Route path="/login" element={<Login />} />
 				<Route path="/signup" element={<Signup />} />
-				<Route path="/create" element={<Create />} />
-				<ProtectedRoute
-					path="/create"
-					component={Create}
-					isAuthenticated={isAuthenticated}
-					requiredRole="admin"
-				/>
-				<ProtectedRoute
-					path="/read"
-					component={Read}
-					isAuthenticated={isAuthenticated}
-					requiredRole="admin"
-				/>
-				<ProtectedRoute
-					path="/update"
-					component={Update}
-					isAuthenticated={isAuthenticated}
-					requiredRole="admin"
-				/>
-				<ProtectedRoute
-					path="/delete"
-					component={Delete}
-					isAuthenticated={isAuthenticated}
-					requiredRole="admin"
-				/>
+				<Route element={<ProtectedRoute />}>
+					<Route path="/create" element={<Create />} />
+					<Route path="/read" element={<Read />} />
+					<Route path="/update" element={<Update />} />
+					<Route path="/delete" element={<Delete />} />
+				</Route>
 			</Routes>
 		</Router>
 	);

@@ -1,23 +1,11 @@
-// components/ProtectedRoute.js
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Outlet, Navigate } from 'react-router-dom'
 
-const ProtectedRoute = ({ component: Component, isAuthenticated, requiredRole, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      isAuthenticated && (requiredRole === undefined || userHasRequiredRole()) ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
+const ProtectedRoute = () => {
+    let auth = {'token': false}
+    return(
+        auth.token ? <Outlet/> : <Navigate to="/login"/>
+    )
+}
 
-const userHasRequiredRole = () => {
-  const userRole = "admin";
-  return userRole === "admin";
-};
-
-export default ProtectedRoute;
+export default ProtectedRoute
