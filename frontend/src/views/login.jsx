@@ -9,6 +9,8 @@ import {
 	Typography,
 	Link,
 	Grid,
+	Snackbar,
+	Alert,
 } from "@mui/material";
 
 const Login = () => {
@@ -16,6 +18,12 @@ const Login = () => {
 
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [openSnackbar, setOpenSnackbar] = useState(false);
+	const [snackbarMessage, setSnackbarMessage] = useState("");
+
+	const handleCloseSnackbar = () => {
+		setOpenSnackbar(false);
+	};
 
 	const handleLogin = async (event) => {
 		event.preventDefault();
@@ -27,11 +35,15 @@ const Login = () => {
 			});
 
 			console.log("Login successful:", response.data);
+			localStorage.setItem("username", username);
 			navigate("/homepage");
 		} catch (error) {
-			console.error(
-				"Error during login:",
-				error.response ? error.response.data : error.message
+			console.error("Error during login:", error);
+			setOpenSnackbar(true);
+			setSnackbarMessage(
+				error.response
+					? error.response.data.message
+					: "An error occurred during login."
 			);
 		}
 	};
@@ -91,6 +103,17 @@ const Login = () => {
 					</Grid>
 				</Grid>
 			</div>
+			<Snackbar
+				open={openSnackbar}
+				autoHideDuration={6000}
+				onClose={handleCloseSnackbar}>
+				<Alert
+					onClose={handleCloseSnackbar}
+					severity="error"
+					sx={{ width: "100%" }}>
+					{snackbarMessage}
+				</Alert>
+			</Snackbar>
 		</Container>
 	);
 };

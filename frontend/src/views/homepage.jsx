@@ -11,11 +11,15 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
+	Container,
+	Link,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import Header from "../components/header";
 
 const Homepage = () => {
+	const navigate = useNavigate();
 	const [transactionsData, setTransactionsData] = useState([]);
 
 	// Fetch data from Express backend when the component mounts
@@ -41,42 +45,66 @@ const Homepage = () => {
 			<CssBaseline />
 
 			<Header />
-
-			<Typography variant="h5" gutterBottom>
-				Transactions List
-			</Typography>
-			<TableContainer component={Paper}>
-				<Table>
-					<TableHead>
-						<TableRow>
-							<TableCell>ID</TableCell>
-							<TableCell>Description</TableCell>
-							<TableCell>Amount</TableCell>
-							<TableCell>Action</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{transactionsData.map((transaction) => (
-							<TableRow key={transaction.id}>
-								<TableCell>{transaction.id}</TableCell>
-								<TableCell>{transaction.description}</TableCell>
-								<TableCell>{transaction.amount}</TableCell>
-								<TableCell>
-									{/* Add buttons for update and delete actions */}
-									<Button variant="outlined" color="primary">
-										Edit
-									</Button>
-									<Button
-										variant="outlined"
-										color="secondary">
-										Delete
-									</Button>
-								</TableCell>
+			<Container style={{ marginTop: "20px" }}>
+				<Typography variant="h5" gutterBottom>
+					Transactions List
+				</Typography>
+				<TableContainer component={Paper}>
+					<Table>
+						<TableHead>
+							<TableRow>
+								<TableCell>ID</TableCell>
+								<TableCell>Description</TableCell>
+								<TableCell>Amount</TableCell>
+								<TableCell>Action</TableCell>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
+						</TableHead>
+						<TableBody>
+							{transactionsData.map((transaction) => (
+								<TableRow key={transaction._id}>
+									<TableCell>{transaction._id}</TableCell>
+									<TableCell>
+										{transaction.description}
+									</TableCell>
+									<TableCell>{transaction.amount}</TableCell>
+									<TableCell>
+										<Button
+											variant="outlined"
+											color="primary"
+											style={{ marginRight: "8px" }}
+											onClick={() =>
+												navigate(
+													`/read?id=${transaction._id}`
+												)
+											}>
+											Read
+										</Button>
+										<Link
+											to={`/update?id=${transaction._id}`}>
+											<Button
+												variant="outlined"
+												color="primary"
+												style={{ marginRight: "8px" }}
+												onClick={() =>
+													navigate(
+														`/update?id=${transaction._id}`
+													)
+												}>
+												Edit
+											</Button>
+										</Link>
+										<Button
+											variant="outlined"
+											color="secondary">
+											Delete
+										</Button>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</Container>
 		</div>
 	);
 };

@@ -1,31 +1,69 @@
-import React from "react";
-import { Typography, Container, Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Typography, Container, Button, CssBaseline } from "@mui/material";
+import Header from "../../components/header";
+import axios from "axios";
 
-const sampleTransaction = {
-	id: 1,
-	description: "Sample Transaction",
-	amount: 75.5,
-};
+const backendUrl = "http://localhost:9000";
 
 const Read = () => {
+	const location = useLocation();
+	const navigate = useNavigate();
+	const queryParams = new URLSearchParams(location.search);
+	const id = queryParams.get("id");
+
+	const [transaction, setTransaction] = useState(null);
+
+	useEffect(() => {
+		const fetchTransaction = async () => {
+			try {
+				const response = await axios.get(
+					`${backendUrl}/transactions/${id}`
+				);
+
+				setTransaction(response.data);
+			} catch (error) {
+				console.error("Error fetching transaction:", error);
+			}
+		};
+
+		fetchTransaction();
+	}, [id]);
+
 	return (
-		<Container>
-			<Typography variant="h5" gutterBottom>
-				Transaction Details
-			</Typography>
-			<Typography variant="body1">
-				<strong>ID:</strong> {sampleTransaction.id}
-			</Typography>
-			<Typography variant="body1">
-				<strong>Description:</strong> {sampleTransaction.description}
-			</Typography>
-			<Typography variant="body1">
-				<strong>Amount:</strong> {sampleTransaction.amount}
-			</Typography>
-			<Button variant="outlined" color="primary">
-				Back to Transactions List
-			</Button>
-		</Container>
+		<div>
+			<CssBaseline />
+
+			<Header />
+
+			<Container style={{ marginTop: "20px" }}>
+				<Typography variant="h5" gutterBottom>
+					Transaction Details
+				</Typography>
+				{transaction ? (
+					<>
+						<Typography variant="body1">
+							<strong>ID:</strong> {transaction.id}
+						</Typography>
+						<Typography variant="body1">
+							<strong>Description:</strong>{" "}
+							{transaction.description}
+						</Typography>
+						<Typography variant="body1">
+							<strong>Amount:</strong> {transaction.amount}
+						</Typography>
+					</>
+				) : (
+					<Typography variant="body1">Loading...</Typography>
+				)}
+				<Button
+					variant="outlined"
+					color="primary"
+					onClick={() => navigate("/homepage")}>
+					Back to Transactions List
+				</Button>
+			</Container>
+		</div>
 	);
 };
 

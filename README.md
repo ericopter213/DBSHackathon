@@ -18,6 +18,8 @@ ReactJS + material UI
 NodeJS, ExpressJS, MongoDB
 
 # How to run
+in root folder, run ```npm install``` if first time and then ```npm start```
+
 ## Frontend
 ```cd``` into frontend folder
 

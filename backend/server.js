@@ -77,7 +77,7 @@ app.post("/login", async (req, res) => {
 });
 
 // Create a new transaction
-app.post("/transactions", async (req, res) => {
+app.post("/addtransaction", async (req, res) => {
 	const { description, amount, date } = req.body;
 
 	try {
@@ -107,7 +107,6 @@ app.get("/transactions", async (req, res) => {
 // Get a specific transaction by ID
 app.get("/transactions/:transactionId", async (req, res) => {
 	const transactionId = req.params.transactionId;
-
 	try {
 		const transaction = await Transaction.findById(transactionId);
 
@@ -125,6 +124,7 @@ app.get("/transactions/:transactionId", async (req, res) => {
 // Update a transaction by ID
 app.put("/transactions/:transactionId", async (req, res) => {
 	const transactionId = req.params.transactionId;
+
 	const { description, amount, date } = req.body;
 
 	try {

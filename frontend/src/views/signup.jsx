@@ -26,7 +26,8 @@ const Signup = () => {
 				password,
 			});
 
-			console.log("Login successful:", response.data);
+			console.log("Signup successful:", response.data);
+			localStorage.setItem("username", username);
 			navigate("/homepage");
 		} catch (error) {
 			console.error(
