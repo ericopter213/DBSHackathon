@@ -6,8 +6,7 @@ from datetime import datetime
 app = Flask(__name__)
 CORS(app)
 
-# Replace 'mysql://user:password@localhost/dbname' with your MySQL connection string
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://user:password@localhost/dbname'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost/dbshack'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -70,7 +69,7 @@ def add_transaction():
 
     return jsonify({"message": "Transaction created successfully"}), 201
 
-@app.route("/transactions", methods=["GET"])
+@app.route("/", methods=["GET"])
 def get_transactions():
     transactions = Transaction.query.all()
     return jsonify([{"id": t.id, "description": t.description, "amount": t.amount, "date": t.date} for t in transactions]), 200
@@ -118,4 +117,21 @@ def delete_transaction(transaction_id):
 
 # Start the server
 if __name__ == "__main__":
+    # Create users
+    user1 = User(username="john_doe", password="password123")
+    user2 = User(username="jane_doe", password="letmein")
+
+    db.session.add(user1)
+    db.session.add(user2)
+    db.session.commit()
+
+    # Create transactions
+    transaction1 = Transaction(description="Groceries", amount=50.0)
+    transaction2 = Transaction(description="Gasoline", amount=30.0)
+
+    db.session.add(transaction1)
+    db.session.add(transaction2)
+    db.session.commit()
+
+    # Start the server
     app.run(debug=True)

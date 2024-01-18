@@ -4,7 +4,7 @@ import { Typography, Container, Button, CssBaseline } from "@mui/material";
 import Header from "../../components/header";
 import axios from "axios";
 
-const backendUrl = "http://localhost:9000";
+const backendUrl = "http://localhost:5000";
 
 const Read = () => {
 	const location = useLocation();

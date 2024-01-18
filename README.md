@@ -18,8 +18,6 @@ ReactJS + material UI
 NodeJS, ExpressJS, MongoDB
 
 # How to run
-in root folder, run ```npm install``` if first time and then ```npm start```
-
 ## Frontend
 ```cd``` into frontend folder
 
@@ -28,10 +26,11 @@ in root folder, run ```npm install``` if first time and then ```npm start```
 ```npm start```
 
 ## Backend
+ensure you have mysql ver 82 installed
+for windows, start mysql with start > services > mysql > start service
 ```cd``` into backend folder
-
-```npm install``` if first time
-
-```node models/populate.js``` to populate database with sample data if first time
-
-```npm start```
+run ```python -m venv env_name``` to create virtual environment, rename env_name to whatever you want
+run ```env_name\Scripts\activate``` to activate virtual environment
+run ```pip install -r requirements.txt``` to install dependencies
+run ```python server.py``` to start the server
+go to ```localhost:5000``` to see the server running, should have some records 

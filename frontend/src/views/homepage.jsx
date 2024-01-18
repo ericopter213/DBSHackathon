@@ -27,7 +27,7 @@ const Homepage = () => {
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					"http://localhost:9000/transactions"
+					"http://localhost:5000/transactions"
 				);
 				const data = await response.json();
 

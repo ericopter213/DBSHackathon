@@ -9,7 +9,7 @@ import {
 import Header from "../../components/header";
 import axios from "axios";
 
-const backendUrl = "http://localhost:9000";
+const backendUrl = "http://localhost:5000";
 
 const Create = () => {
 	const [description, setDescription] = useState("");
