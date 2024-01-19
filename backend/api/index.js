@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.options("*", cors());
 
-app.get("/api", (req, res) => {
+app.get("", (req, res) => {
 	res.send("Hello World");
 });
 
@@ -36,7 +36,7 @@ const Transaction = mongoose.model("Transaction", transactionSchema);
 const User = mongoose.model("User", userSchema);
 
 // Routes
-app.post("/api/signup", async (req, res) => {
+app.post("/signup", async (req, res) => {
 	const { username, password } = req.body;
 
 	try {
@@ -60,7 +60,7 @@ app.post("/api/signup", async (req, res) => {
 	}
 });
 
-app.post("/api/login", async (req, res) => {
+app.post("/login", async (req, res) => {
 	const { username, password } = req.body;
 
 	try {
@@ -81,7 +81,7 @@ app.post("/api/login", async (req, res) => {
 });
 
 // Create a new transaction
-app.post("/api/addtransaction", async (req, res) => {
+app.post("/addtransaction", async (req, res) => {
 	const { description, amount, date } = req.body;
 
 	try {
@@ -98,7 +98,7 @@ app.post("/api/addtransaction", async (req, res) => {
 });
 
 // Get all transactions
-app.get("/api/transactions", async (req, res) => {
+app.get("/transactions", async (req, res) => {
 	try {
 		const transactions = await Transaction.find();
 		return res.status(200).json(transactions);
@@ -109,7 +109,7 @@ app.get("/api/transactions", async (req, res) => {
 });
 
 // Get a specific transaction by ID
-app.get("/api/transactions/:transactionId", async (req, res) => {
+app.get("/transactions/:transactionId", async (req, res) => {
 	const transactionId = req.params.transactionId;
 	try {
 		const transaction = await Transaction.findById(transactionId);
@@ -126,7 +126,7 @@ app.get("/api/transactions/:transactionId", async (req, res) => {
 });
 
 // Update a transaction by ID
-app.put("/api/transactions/:transactionId", async (req, res) => {
+app.put("/transactions/:transactionId", async (req, res) => {
 	const transactionId = req.params.transactionId;
 
 	const { description, amount, date } = req.body;
@@ -150,7 +150,7 @@ app.put("/api/transactions/:transactionId", async (req, res) => {
 });
 
 // Delete a transaction by ID
-app.delete("/api/transactions/:transactionId", async (req, res) => {
+app.delete("/transactions/:transactionId", async (req, res) => {
 	const transactionId = req.params.transactionId;
 
 	try {
