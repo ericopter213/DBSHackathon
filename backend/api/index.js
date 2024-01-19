@@ -171,7 +171,7 @@ app.delete("/api/transactions/:transactionId", async (req, res) => {
 	}
 });
 
-// // Start the server
+// Start the server
 app.listen(port, () => {
 	console.log(`Server is running on http://localhost:${port}`);
 });
