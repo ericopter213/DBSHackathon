@@ -1,16 +1,6 @@
 const express = require("express");
-const cors = require("cors");
+const router = express.Router();
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-require("dotenv").config();
-
-const app = express();
-const port = 8000;
-
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.options("*", cors());
 
 mongoose.connect(process.env.MONGODB_URL, {
 	useNewUrlParser: true,
@@ -24,7 +14,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-app.post("/api/login", async (req, res) => {
+app.post("/login", async (req, res) => {
 	const { username, password } = req.body;
 
 	try {
@@ -43,3 +33,5 @@ app.post("/api/login", async (req, res) => {
 		return res.status(500).json({ message: "Internal Server Error" });
 	}
 });
+
+module.exports = router;

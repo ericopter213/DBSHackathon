@@ -1,26 +1,20 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-require("dotenv").config();
+function notFound(req, res, next) {
+	res.status(404);
+	const error = new Error(`🔍 - Not Found - ${req.originalUrl}`);
+	next(error);
+}
 
-const app = express();
-const port = 8000;
-
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.options("*", cors());
-
-app.get("/api/test", (req, res) => {
-	res.send("test success");
-});
-
+function errorHandler(err, req, res, next) {
+	const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
+	res.status(statusCode);
+	res.json({
+		message: err.message,
+		stack: process.env.NODE_ENV === "production" ? "🥞" : err.stack,
+	});
+}
 const allowCors = (fn) => async (req, res) => {
 	res.setHeader("Access-Control-Allow-Credentials", true);
 	res.setHeader("Access-Control-Allow-Origin", "*");
-	// another common pattern
-	// res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
 	res.setHeader(
 		"Access-Control-Allow-Methods",
 		"GET,OPTIONS,PATCH,DELETE,POST,PUT"
@@ -36,4 +30,8 @@ const allowCors = (fn) => async (req, res) => {
 	return await fn(req, res);
 };
 
-module.exports = allowCors(app);
+module.exports = {
+	notFound,
+	errorHandler,
+	allowCors,
+};
