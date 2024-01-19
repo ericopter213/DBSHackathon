@@ -35,7 +35,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
-app.post("/signup", async (req, res) => {
+app.post("/api/signup", async (req, res) => {
 	const { username, password } = req.body;
 
 	try {
@@ -59,7 +59,7 @@ app.post("/signup", async (req, res) => {
 	}
 });
 
-app.post("/login", async (req, res) => {
+app.post("/api/login", async (req, res) => {
 	const { username, password } = req.body;
 
 	try {
@@ -80,7 +80,7 @@ app.post("/login", async (req, res) => {
 });
 
 // Create a new transaction
-app.post("/addtransaction", async (req, res) => {
+app.post("/api/addtransaction", async (req, res) => {
 	const { description, amount, date } = req.body;
 
 	try {
@@ -97,7 +97,7 @@ app.post("/addtransaction", async (req, res) => {
 });
 
 // Get all transactions
-app.get("/transactions", async (req, res) => {
+app.get("/api/transactions", async (req, res) => {
 	try {
 		const transactions = await Transaction.find();
 		return res.status(200).json(transactions);
@@ -108,7 +108,7 @@ app.get("/transactions", async (req, res) => {
 });
 
 // Get a specific transaction by ID
-app.get("/transactions/:transactionId", async (req, res) => {
+app.get("/api/transactions/:transactionId", async (req, res) => {
 	const transactionId = req.params.transactionId;
 	try {
 		const transaction = await Transaction.findById(transactionId);
@@ -125,7 +125,7 @@ app.get("/transactions/:transactionId", async (req, res) => {
 });
 
 // Update a transaction by ID
-app.put("/transactions/:transactionId", async (req, res) => {
+app.put("/api/transactions/:transactionId", async (req, res) => {
 	const transactionId = req.params.transactionId;
 
 	const { description, amount, date } = req.body;
@@ -149,7 +149,7 @@ app.put("/transactions/:transactionId", async (req, res) => {
 });
 
 // Delete a transaction by ID
-app.delete("/transactions/:transactionId", async (req, res) => {
+app.delete("/api/transactions/:transactionId", async (req, res) => {
 	const transactionId = req.params.transactionId;
 
 	try {
