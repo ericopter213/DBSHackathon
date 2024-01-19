@@ -9,9 +9,8 @@ import {
 } from "@mui/material";
 import Header from "../../components/header";
 import axios from "axios";
-require("dotenv").config();
 
-const backendUrl = `${process.env.BACKEND_URL}`;
+const backendUrl = `${process.env.REACT_APP_BACKEND_URL}`;
 
 const Update = () => {
 	const location = useLocation();

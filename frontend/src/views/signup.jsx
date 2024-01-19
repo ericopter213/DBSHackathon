@@ -10,7 +10,6 @@ import {
 	Grid,
 	Link,
 } from "@mui/material";
-require("dotenv").config();
 
 const Signup = () => {
 	const navigate = useNavigate();
@@ -23,7 +22,7 @@ const Signup = () => {
 		event.preventDefault();
 		try {
 			const response = await axios.post(
-				`${process.env.BACKEND_URL}/signup`,
+				`${process.env.REACT_APP_BACKEND_URL}/signup`,
 				{
 					username,
 					password,

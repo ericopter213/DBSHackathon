@@ -12,7 +12,6 @@ import {
 	Snackbar,
 	Alert,
 } from "@mui/material";
-require("dotenv").config();
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -31,7 +30,7 @@ const Login = () => {
 
 		try {
 			const response = await axios.post(
-				`${process.env.BACKEND_URL}/login`,
+				`${process.env.REACT_APP_BACKEND_URL}/login`,
 				{
 					username,
 					password,
