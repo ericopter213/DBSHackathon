@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import Header from "../../components/header";
 import axios from "axios";
+require("dotenv").config();
 
-const backendUrl = "http://localhost:9000";
+const backendUrl = `${process.env.BACKEND_URL}`;
 
 const Create = () => {
 	const [description, setDescription] = useState("");
@@ -27,13 +28,10 @@ const Create = () => {
 		event.preventDefault();
 
 		try {
-			const response = await axios.post(
-				`${backendUrl}/addtransaction`,
-				{
-					description,
-					amount: parseFloat(amount), // Ensure amount is converted to a number
-				}
-			);
+			const response = await axios.post(`${backendUrl}/addtransaction`, {
+				description,
+				amount: parseFloat(amount), // Ensure amount is converted to a number
+			});
 
 			console.log("Transaction added successfully:", response.data);
 
@@ -41,7 +39,6 @@ const Create = () => {
 			setAmount("");
 		} catch (error) {
 			console.error("Error adding transaction:", error);
-
 		}
 	};
 

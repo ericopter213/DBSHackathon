@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Typography, Container, Button, CssBaseline } from "@mui/material";
 import Header from "../../components/header";
 import axios from "axios";
+require("dotenv").config();
 
-const backendUrl = "http://localhost:9000";
+const backendUrl = `${process.env.BACKEND_URL}`;
 
 const Read = () => {
 	const location = useLocation();

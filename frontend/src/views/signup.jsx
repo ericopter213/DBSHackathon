@@ -10,6 +10,7 @@ import {
 	Grid,
 	Link,
 } from "@mui/material";
+require("dotenv").config();
 
 const Signup = () => {
 	const navigate = useNavigate();
@@ -21,10 +22,13 @@ const Signup = () => {
 	const handleSignup = async (event) => {
 		event.preventDefault();
 		try {
-			const response = await axios.post("http://localhost:9000/signup", {
-				username,
-				password,
-			});
+			const response = await axios.post(
+				`${process.env.BACKEND_URL}/signup`,
+				{
+					username,
+					password,
+				}
+			);
 
 			console.log("Signup successful:", response.data);
 			localStorage.setItem("username", username);

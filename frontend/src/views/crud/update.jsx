@@ -9,8 +9,9 @@ import {
 } from "@mui/material";
 import Header from "../../components/header";
 import axios from "axios";
+require("dotenv").config();
 
-const backendUrl = "http://localhost:9000";
+const backendUrl = `${process.env.BACKEND_URL}`;
 
 const Update = () => {
 	const location = useLocation();
@@ -41,7 +42,7 @@ const Update = () => {
 					amount: parseFloat(amount),
 				}
 			);
-			console.log(response)
+			console.log(response);
 		} catch (error) {
 			// Handle error, show error message to the user
 			console.error("Error updating data:", error);

@@ -12,6 +12,7 @@ import {
 	Snackbar,
 	Alert,
 } from "@mui/material";
+require("dotenv").config();
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -29,10 +30,13 @@ const Login = () => {
 		event.preventDefault();
 
 		try {
-			const response = await axios.post("http://localhost:9000/login", {
-				username,
-				password,
-			});
+			const response = await axios.post(
+				`${process.env.BACKEND_URL}/login`,
+				{
+					username,
+					password,
+				}
+			);
 
 			console.log("Login successful:", response.data);
 			localStorage.setItem("username", username);

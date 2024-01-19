@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import Header from "../components/header";
+require("dotenv").config();
 
 const Homepage = () => {
 	const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Homepage = () => {
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					"http://localhost:9000/transactions"
+					`${process.env.BACKEND_URL}/transactions`
 				);
 				const data = await response.json();
 
