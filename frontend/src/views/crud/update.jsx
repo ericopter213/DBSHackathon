@@ -35,7 +35,7 @@ const Update = () => {
 
 		try {
 			const response = await axios.put(
-				`${backendUrl}/transactions/${id}`,
+				`${backendUrl}transactions/${id}`,
 				{
 					description,
 					amount: parseFloat(amount),

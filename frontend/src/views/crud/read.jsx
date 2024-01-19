@@ -18,7 +18,7 @@ const Read = () => {
 		const fetchTransaction = async () => {
 			try {
 				const response = await axios.get(
-					`${backendUrl}/transactions/${id}`
+					`${backendUrl}transactions/${id}`
 				);
 
 				setTransaction(response.data);

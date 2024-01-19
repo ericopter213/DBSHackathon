@@ -27,7 +27,7 @@ const Homepage = () => {
 		const fetchData = async () => {
 			try {
 				const response = await fetch(
-					`${process.env.REACT_APP_BACKEND_URL}/transactions`
+					`${process.env.REACT_APP_BACKEND_URL}transactions`
 				);
 				const data = await response.json();
 
