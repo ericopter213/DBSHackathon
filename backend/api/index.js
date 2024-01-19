@@ -7,6 +7,10 @@ require("dotenv").config();
 const app = express();
 const port = 8000;
 
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+
 app.get("/api", (req, res) => {
 	res.send("Hello World");
 });
@@ -30,9 +34,7 @@ const transactionSchema = new mongoose.Schema({
 const Transaction = mongoose.model("Transaction", transactionSchema);
 const User = mongoose.model("User", userSchema);
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
+
 
 // Routes
 app.post("/api/signup", async (req, res) => {
