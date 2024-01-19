@@ -176,6 +176,10 @@ app.listen(port, () => {
 	console.log(`Server is running on http://localhost:${port}`);
 });
 
+app.get("/api/test", (req, res) => {
+	res.send("test success");
+});
+
 const allowCors = (fn) => async (req, res) => {
 	res.setHeader("Access-Control-Allow-Credentials", true);
 	res.setHeader("Access-Control-Allow-Origin", "*");
