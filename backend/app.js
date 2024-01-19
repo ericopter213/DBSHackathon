@@ -5,15 +5,16 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const app = express();
-const port = 9000;
+const port = 8000;
 
-mongoose.connect(
-	process.env.MONGODB_URL,
-	{
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	}
-);
+app.get("/", (req, res) => {
+	res.send("Hello World");
+});
+
+mongoose.connect(process.env.MONGODB_URL, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+});
 
 const userSchema = new mongoose.Schema({
 	username: String,
