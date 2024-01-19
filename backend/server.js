@@ -2,17 +2,19 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+require("dotenv").config();
 
 const app = express();
 const port = 9000;
 
-// Connect to MongoDB (replace 'yourdatabaseurl' with your MongoDB connection string)
-mongoose.connect("mongodb://localhost:27017/", {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+mongoose.connect(
+	process.env.MONGODB_URL,
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	}
+);
 
-// Create a user schema
 const userSchema = new mongoose.Schema({
 	username: String,
 	password: String,

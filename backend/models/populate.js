@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const Transaction = require("./transactions");
 const User = require("./users");
+const { MongoClient, ServerApiVersion } = require("mongodb");
+require("dotenv").config();
 
-mongoose.connect("mongodb://localhost:27017/", {
+mongoose.connect(process.env.MONGODB_URL, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
