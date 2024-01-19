@@ -22,7 +22,7 @@ const Signup = () => {
 		event.preventDefault();
 		try {
 			const response = await axios.post(
-				`${process.env.REACT_APP_BACKEND_URL}signup`,
+				`${process.env.REACT_APP_BACKEND_URL}/signup`,
 				{
 					username,
 					password,

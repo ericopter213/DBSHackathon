@@ -27,7 +27,7 @@ const Create = () => {
 		event.preventDefault();
 
 		try {
-			const response = await axios.post(`${backendUrl}addtransaction`, {
+			const response = await axios.post(`${backendUrl}/addtransaction`, {
 				description,
 				amount: parseFloat(amount), // Ensure amount is converted to a number
 			});
