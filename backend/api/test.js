@@ -12,7 +12,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.options("*", cors());
 
-app.get("/test", (req, res) => {
+app.get("/api/test", (req, res) => {
 	res.send("test success");
 });
 
