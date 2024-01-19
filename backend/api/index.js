@@ -1,175 +1,41 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-require("dotenv").config();
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
 
-const app = express();
-const port = 9000;
+var indexRouter = require("../routes/index");
 
-mongoose.connect(
-	process.env.MONGODB_URL,
-	{
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	}
-);
+var app = express();
 
-const userSchema = new mongoose.Schema({
-	username: String,
-	password: String,
-});
+const whitelist = ["*"];
 
-const transactionSchema = new mongoose.Schema({
-	description: String,
-	amount: Number,
-	date: { type: Date, default: Date.now },
-});
-
-const Transaction = mongoose.model("Transaction", transactionSchema);
-const User = mongoose.model("User", userSchema);
-
-// Middleware
-app.use(cors());
-app.use(bodyParser.json());
-
-// Routes
-app.post("/signup", async (req, res) => {
-	const { username, password } = req.body;
-
-	try {
-		// Check if the username already exists
-		const existingUser = await User.findOne({ username });
-
-		if (existingUser) {
-			return res.status(409).json({ message: "Username already exists" });
-		}
-
-		// Create a new user
-		const newUser = new User({ username, password });
-		await newUser.save();
-
-		return res
-			.status(201)
-			.json({ message: "User registered successfully" });
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ message: "Internal Server Error" });
-	}
-});
-
-app.post("/login", async (req, res) => {
-	const { username, password } = req.body;
-
-	try {
-		// Find the user by username and password
-		const user = await User.findOne({ username, password });
-
-		if (!user) {
-			return res
-				.status(401)
-				.json({ message: "Invalid username or password" });
-		}
-
-		return res.status(200).json({ message: "Login successful" });
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ message: "Internal Server Error" });
-	}
-});
-
-// Create a new transaction
-app.post("/addtransaction", async (req, res) => {
-	const { description, amount, date } = req.body;
-
-	try {
-		const newTransaction = new Transaction({ description, amount, date });
-		await newTransaction.save();
-
-		return res
-			.status(201)
-			.json({ message: "Transaction created successfully" });
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ message: "Internal Server Error" });
-	}
-});
-
-// Get all transactions
-app.get("/transactions", async (req, res) => {
-	try {
-		const transactions = await Transaction.find();
-		return res.status(200).json(transactions);
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ message: "Internal Server Error" });
-	}
-});
-
-// Get a specific transaction by ID
-app.get("/transactions/:transactionId", async (req, res) => {
-	const transactionId = req.params.transactionId;
-	try {
-		const transaction = await Transaction.findById(transactionId);
-
-		if (!transaction) {
-			return res.status(404).json({ message: "Transaction not found" });
-		}
-
-		return res.status(200).json(transaction);
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ message: "Internal Server Error" });
-	}
-});
-
-// Update a transaction by ID
-app.put("/transactions/:transactionId", async (req, res) => {
-	const transactionId = req.params.transactionId;
-
-	const { description, amount, date } = req.body;
-
-	try {
-		const updatedTransaction = await Transaction.findByIdAndUpdate(
-			transactionId,
-			{ description, amount, date },
-			{ new: true }
+app.use((req, res, next) => {
+	const origin = req.get("referer");
+	const isWhitelisted = whitelist.find((w) => origin && origin.includes(w));
+	if (isWhitelisted) {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		res.setHeader(
+			"Access-Control-Allow-Methods",
+			"GET, POST, OPTIONS, PUT, PATCH, DELETE"
 		);
-
-		if (!updatedTransaction) {
-			return res.status(404).json({ message: "Transaction not found" });
-		}
-
-		return res.status(200).json(updatedTransaction);
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ message: "Internal Server Error" });
-	}
-});
-
-// Delete a transaction by ID
-app.delete("/transactions/:transactionId", async (req, res) => {
-	const transactionId = req.params.transactionId;
-
-	try {
-		const deletedTransaction = await Transaction.findByIdAndDelete(
-			transactionId
+		res.setHeader(
+			"Access-Control-Allow-Headers",
+			"X-Requested-With,Content-Type,Authorization"
 		);
-
-		if (!deletedTransaction) {
-			return res.status(404).json({ message: "Transaction not found" });
-		}
-
-		return res
-			.status(200)
-			.json({ message: "Transaction deleted successfully" });
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({ message: "Internal Server Error" });
+		res.setHeader("Access-Control-Allow-Credentials", true);
 	}
+	// Pass to next layer of middleware
+	if (req.method === "OPTIONS") res.sendStatus(200);
+	else next();
 });
 
-// Start the server
-app.listen(port, () => {
-	console.log(`Server is running on http://localhost:${port}`);
-});
+const setContext = (req, res, next) => {
+	if (!req.context) req.context = {};
+	next();
+};
+app.use(setContext);
+
+app.use("/", indexRouter);
+
+module.exports = app;
