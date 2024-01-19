@@ -10,6 +10,7 @@ const port = 8000;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.options("*", cors());
 
 app.get("/api", (req, res) => {
 	res.send("Hello World");
